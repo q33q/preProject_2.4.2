@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style type="text/css">
+        .styled-table {
+            border-collapse: collapse;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            margin: auto;
+
+        }
+
+        .styled-table thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .styled-table th:nth-child(6) {
+            width: 29%;
+        }
+
+        .styled-table th {
+            text-align: center;
+        }
+
+        .styled-table th,
+        .styled-table td {
+            padding: 6px 15px;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+
+        .button {
+            background: #1AAB8A;
+            color: #fff;
+            border: none;
+            position: relative;
+            font-size: 1em;
+            padding: 5px;
+            cursor: pointer;
+            transition: 800ms ease all;
+            outline: none;
+            margin: 0 5px 5px 0;
+            text-decoration: none;
+            display: block;
+            float: left;
+            width: -webkit-fill-available;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #fff;
+            color: #1AAB8A;
+        }
+
+        .button:before, .button:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2px;
+            width: 0;
+            background: #1AAB8A;
+            transition: 400ms ease all;
+        }
+
+        .button:after {
+            right: inherit;
+            top: inherit;
+            left: 0;
+            bottom: 0;
+        }
+
+        .button:hover:before, .button:hover:after {
+            width: 100%;
+            transition: 800ms ease all;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .center {
+            margin: 0 auto;
+            width: max-content;
+        }
+
+    </style>
+</head>
+<body>
+<div class="center">
+    <h1 align="center">Users</h1>
+    <div class="fl">
+        <a class="button" href="/admin/users/new">Create new user</a>
+        <a class="button" href="javascript: document.logoutForm.submit()" role="menuitem">Logout</a>
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input hidden type="submit" value="Sign Out"/>
+        </form>
+    </div>
+    <div class="fl">
+        <table class="styled-table" cellspacing="0">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Last name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td align="center" th:text="${user.getId()}"></td>
+                <td align="center" th:text="${user.getFirstName()}"></td>
+                <td align="center" th:text="${user.getLastName()}"></td>
+                <td align="center" th:text="${user.getAge()}"></td>
+                <td align="center" th:text="${user.getEmail()}"></td>
+                <td align="center" th:text="${user.getPassword()}"></td>
+                <td align="center">
+                    <p th:each="role : ${user.roles}" th:text="${role.getName()}"></p>
+                </td>
+                <td align="center">
+                    <a class="button" th:href="@{/admin/users/{id}(id=${user.getId()})}">Show</a>
+                    <a class="button" th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Edit</a>
+                    <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
+                        <button class="button" type="submit" value="Delete">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
