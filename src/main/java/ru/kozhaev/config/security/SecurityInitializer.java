@@ -1,4 +1,4 @@
-package ru.kozhaev.security;
+package ru.kozhaev.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

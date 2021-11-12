@@ -1,9 +1,7 @@
-package ru.kozhaev.security;
+package ru.kozhaev.Util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kozhaev.model.Role;
@@ -17,12 +15,10 @@ import java.util.*;
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final UserService userService;
     private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
 
-    public SetupDataLoader(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public SetupDataLoader(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,7 +43,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                 new HashSet<>(Collections.singletonList(roleService.getByName("ROLE_USER"))));
     }
 
-    private Role createRoleIfNotFound(final String name) {
+    @Transactional
+    protected Role createRoleIfNotFound(final String name) {
         List<Role> roles = roleService.getAll();
         boolean containRole = roles.stream().map(Role::getName).anyMatch(name::equals);
         Role role = null;
@@ -58,8 +55,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         return role;
     }
 
-
-    private void createUserIfNotFound(String firstName, String lastName, Byte age, String email, String password, Collection<Role> roles) {
+    @Transactional
+    protected void createUserIfNotFound(String firstName, String lastName, Byte age, String email, String password, Collection<Role> roles) {
         List<User> users = userService.getAll();
         boolean containUser = users.stream().map(User::getFirstName).anyMatch(firstName::equals);
         User user = null;
@@ -68,7 +65,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setAge(age);
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(password);
             user.setEmail(email);
         }
         Objects.requireNonNull(user).setRoles(roles);

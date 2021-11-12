@@ -121,7 +121,6 @@
                 <th>Last name</th>
                 <th>Age</th>
                 <th>Email</th>
-                <th>Password</th>
                 <th>Roles</th>
                 <th>Actions</th>
             </tr>
@@ -133,7 +132,6 @@
                 <td align="center" th:text="${user.getLastName()}"></td>
                 <td align="center" th:text="${user.getAge()}"></td>
                 <td align="center" th:text="${user.getEmail()}"></td>
-                <td align="center" th:text="${user.getPassword()}"></td>
                 <td align="center">
                     <p th:each="role : ${user.roles}" th:text="${role.getName()}"></p>
                 </td>

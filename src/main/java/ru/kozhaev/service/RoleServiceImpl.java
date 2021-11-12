@@ -1,6 +1,5 @@
 package ru.kozhaev.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kozhaev.dao.RoleDaoImpl;
@@ -11,8 +10,11 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleDaoImpl roleDao;
+    private final RoleDaoImpl roleDao;
+
+    public RoleServiceImpl(RoleDaoImpl roleDao) {
+        this.roleDao = roleDao;
+    }
 
     @Override
     @Transactional

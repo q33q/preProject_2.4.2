@@ -1,6 +1,5 @@
 package ru.kozhaev.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,9 +9,11 @@ import ru.kozhaev.model.User;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserService UserService;
+    private final UserService UserService;
 
+    public UserDetailsServiceImpl(ru.kozhaev.service.UserService userService) {
+        UserService = userService;
+    }
     // «Пользователь» – это просто Object. В большинстве случаев он может быть
     //  приведен к классу UserDetails.
     // Для создания UserDetails используется интерфейс UserDetailsService, с единственным методом:

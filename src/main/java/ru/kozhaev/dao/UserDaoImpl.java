@@ -1,6 +1,5 @@
 package ru.kozhaev.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.kozhaev.model.Role;
 import ru.kozhaev.model.User;
@@ -15,12 +14,14 @@ import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
-    @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    public UserDaoImpl(RoleService roleService) {
+        this.roleService = roleService;
+    }
 
     @Override
     public void save(User user) {
